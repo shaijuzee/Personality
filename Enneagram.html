@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enneagram Personality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h3 {
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .results {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Enneagram Personality Test</h1>
+</header>
+
+<div class="container">
+    <div id="quiz">
+        <h2>Answer the questions below to find your Enneagram type:</h2>
+
+        <div class="question" id="q1">
+            <h3>1. When facing a challenging situation, how do you usually respond?</h3>
+            <ul class="options">
+                <li><input type="radio" name="q1" value="Type 1"> I analyze the problem and try to find a logical solution.</li>
+                <li><input type="radio" name="q1" value="Type 2"> I focus on maintaining harmony and avoiding conflict.</li>
+                <li><input type="radio" name="q1" value="Type 3"> I take immediate action to solve the issue.</li>
+            </ul>
+        </div>
+
+        <div class="question" id="q2">
+            <h3>2. What drives you in your daily life?</h3>
+            <ul class="options">
+                <li><input type="radio" name="q2" value="Type 2"> A desire to help others and feel needed.</li>
+                <li><input type="radio" name="q2" value="Type 3"> The pursuit of personal success and achievement.</li>
+                <li><input type="radio" name="q2" value="Type 5"> A thirst for knowledge and understanding.</li>
+            </ul>
+        </div>
+
+        <div class="question" id="q3">
+            <h3>3. How do you handle criticism?</h3>
+            <ul class="options">
+                <li><input type="radio" name="q3" value="Type 4"> I take it personally and feel hurt.</li>
+                <li><input type="radio" name="q3" value="Type 1"> I use it to improve and strive to do better.</li>
+                <li><input type="radio" name="q3" value="Type 8"> I defend myself and stand my ground firmly.</li>
+            </ul>
+        </div>
+
+        <div class="question" id="q4">
+            <h3>4. Which of the following statements best describes your personality?</h3>
+            <ul class="options">
+                <li><input type="radio" name="q4" value="Type 2"> I am focused on being helpful and supportive to others.</li>
+                <li><input type="radio" name="q4" value="Type 3"> I am ambitious and goal-oriented.</li>
+                <li><input type="radio" name="q4" value="Type 7"> I am enthusiastic and seek out new adventures.</li>
+            </ul>
+        </div>
+
+        <div class="question" id="q5">
+            <h3>5. What is your greatest fear?</h3>
+            <ul class="options">
+                <li><input type="radio" name="q5" value="Type 2"> Being unworthy or unloved.</li>
+                <li><input type="radio" name="q5" value="Type 3"> Failing to achieve my goals.</li>
+                <li><input type="radio" name="q5" value="Type 6"> Experiencing chaos or instability.</li>
+            </ul>
+        </div>
+
+        <button class="btn" onclick="calculateResults()">Submit</button>
+    </div>
+
+    <div id="results" class="results">
+        <h2>Your Enneagram Type:</h2>
+        <p id="resultText"></p>
+        <a href="#" class="btn" onclick="restartQuiz()">Take the Quiz Again</a>
+    </div>
+</div>
+
+<script>
+    function calculateResults() {
+        const answers = {
+            q1: document.querySelector('input[name="q1"]:checked')?.value,
+            q2: document.querySelector('input[name="q2"]:checked')?.value,
+            q3: document.querySelector('input[name="q3"]:checked')?.value,
+            q4: document.querySelector('input[name="q4"]:checked')?.value,
+            q5: document.querySelector('input[name="q5"]:checked')?.value
+        };
+
+        if (!answers.q1 || !answers.q2 || !answers.q3 || !answers.q4 || !answers.q5) {
+            alert('Please answer all questions before submitting.');
+            return;
+        }
+
+        const typeCounts = {
+            "Type 1": 0,
+            "Type 2": 0,
+            "Type 3": 0,
+            "Type 4": 0,
+            "Type 5": 0,
+            "Type 6": 0,
+            "Type 7": 0,
+            "Type 8": 0,
+            "Type 9": 0
+        };
+
+        const typeNames = {
+            "Type 1": "The Perfectionist",
+            "Type 2": "The Helper",
+            "Type 3": "The Achiever",
+            "Type 4": "The Individualist",
+            "Type 5": "The Investigator",
+            "Type 6": "The Loyalist",
+            "Type 7": "The Enthusiast",
+            "Type 8": "The Challenger",
+            "Type 9": "The Peacemaker"
+        };
+
+        // Count the answers
+        Object.values(answers).forEach(type => {
+            typeCounts[type]++;
+        });
+
+        // Find the type with the highest count
+        const highestType = Object.keys(typeCounts).reduce((a, b) => typeCounts[a] > typeCounts[b] ? a : b);
+
+        document.getElementById('quiz').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('resultText').textContent = `${highestType}: ${typeNames[highestType]}`;
+    }
+
+    function restartQuiz() {
+        document.getElementById('quiz').style.display = 'block';
+        document.getElementById('results').style.display = 'none';
+        document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+    }
+</script>
+
+</body>
+</html>
